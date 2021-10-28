@@ -12,14 +12,17 @@ import (
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/cengsin/oracle"
 	"github.com/google/uuid"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var _writeValue = false
 var withHedaer = true
-var db *gorm.DB
+var local = true
+var mainRoot string = ""
+
+
 
 // type masterproduct struct{
 //     Id int64 `json:"id"`
@@ -100,9 +103,14 @@ type OrderDto struct{
 
 }
 // var mainRoot string ="/Users/tcytatli/Documents/md/prod/"
-  var mainRoot string ="D:/htmlpath/"
+
+ 
 func main() {
-    
+    if(local){
+        mainRoot = "./"
+    }else{
+        mainRoot = "D:/htmlpath/"
+    }
     // path, err := os.Executable()
     // if err != nil {
     //     log.Println(err)
@@ -250,7 +258,64 @@ func main() {
                                 }
                             }
                         }
+
+
+
+                    }else if(strings.Contains(secondRow,"<td class=\"BG0 S\" colspan=\"14\">")){
+                        splitDataThird := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"14\">")
+                        for _, thirdData := range splitDataThird{
+                            if(strings.Contains(thirdData,"<td class=\"BG1 S\" colspan=\"16\">")){
+                                splitBg016 := strings.Split(thirdData,"<td class=\"BG1 S\" colspan=\"16\">")
+                                for _, bg2Data  := range splitBg016 {
+                                    writeValue(bg2Data)
+                                    trSplitdata := strings.Split(bg2Data, "<tr>")
+                                    for _, row := range trSplitdata {
+                                        writeValue(row)
+                                        _index := "0"
+                                        if (strings.Contains(row, "class=\"BG0")) {
+                                            _index = "3"
+                                        } else if (strings.Contains(row, "class=\"BG1")) {
+                                            _index = "4"
+                                        } else if (strings.Contains(row, "class=\"BG2")) {
+                                            _index = "5"
+                                        } else if (strings.Contains(row, "<td class=\"BG0 R FP1\">")) {
+                                            _index = "3"
+                                        }
+                                        val := parseData(row, _index, withHedaer)
+                                        if (fieldControl(val)) {
+                                            orders = append(orders, * val)
+                                        }
+                                    }
+                                }
+                            }else{
+                                trSplitdata := strings.Split(thirdData, "<tr>")
+                                for _, row := range trSplitdata {
+                                    writeValue(row)
+                                    _index := "0"
+                                    if (strings.Contains(row, "class=\"BG0")) {
+                                        _index = "3"
+                                    } else if (strings.Contains(row, "class=\"BG1")) {
+                                        _index = "4"
+                                    } else if (strings.Contains(row, "class=\"BG2")) {
+                                        _index = "2"
+                                    } else if (strings.Contains(row, "<td class=\"BG0 R FP1\">")) {
+                                        _index = "3"
+                                    }
+                                    val := parseData(row, _index, withHedaer)
+                                    if (fieldControl(val)) {
+                                        orders = append(orders, * val)
+                                    }
+                                }
+                            }
+                        }
+
+
+                        
                     }else {
+
+
+
+
                         trSplitdata := strings.Split(secondRow, "<tr>")
                         for _, row := range trSplitdata {
                             writeValue(row)
@@ -271,7 +336,7 @@ func main() {
                         }
                     }
                 }
-            } else if (strings.Contains(firstRow, "<td class=\"BclearG2 S\" colspan=\"16\">")) {
+            } else if (strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")) {
                 splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")
                 for _, bg2Data  := range splitData {
                     writeValue(bg2Data)
@@ -322,7 +387,7 @@ func main() {
                 for _, row := range trSplitdata {
                     writeValue(row)
                     _index := "0"
-                    if (strings.Contains(row, "class=\"BG0 S\"")) {
+                    if (strings.Contains(row, "class=\"BG0")) {
                         _index = "master"
                     } else if (strings.Contains(row, "class=\"BG1")) {
                         _index = "1"
@@ -340,7 +405,7 @@ func main() {
             }
         }
     }
-    saveTabels(orders, uniqueID)
+     saveTabels(orders, uniqueID)
     writeToExcel(orders, fileName)
     
 }
@@ -366,7 +431,7 @@ func writeValue(value string){
         e.col0=""
     }else{
         value = strings.ReplaceAll(value,"</td>","</td>\n")
-      value = strings.ReplaceAll(value,"</tr>","")
+    //   value = strings.ReplaceAll(value,"</tr>","")
     //  value = strings.ReplaceAll(value,"class=\"BG0\"","")
     //  value = strings.ReplaceAll(value,"class=\"BG0\"","")
     //  value = strings.ReplaceAll(value,"class=\"BG0 L MLZ\"","")
@@ -478,9 +543,9 @@ func moveFile(file1, file2 string) error {
 
  func ConnectDB() *gorm.DB {
      log.Println("Database bağlantırı kuruluyor...")
-	// db, err := gorm.Open(postgres.Open("host=localhost user=postgres password=12345 dbname=htmlconvert port=5435 sslmode=disable"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open("host=localhost user=postgres password=12345 dbname=htmlconvert port=5435 sslmode=disable"), &gorm.Config{})
     
-    db, err := gorm.Open(oracle.Open("Provider=OraOLEDB.Oracle;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=AOE)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=orcl)));User Id=pak_2021;Password=pak_2021;"), &gorm.Config{})
+    // db, err := gorm.Open(oracle.Open("Provider=OraOLEDB.Oracle;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=AOE)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=orcl)));User Id=pak_2021;Password=pak_2021;"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 		return nil
