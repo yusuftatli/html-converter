@@ -8,7 +8,6 @@ require (
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
 	github.com/go-logfmt/logfmt v0.5.0 // indirect
-	github.com/godror/godror v0.28.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.0 // indirect
@@ -29,5 +28,5 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/goracle.v2 v2.24.1 // indirect
 	gorm.io/driver/postgres v1.2.1 // indirect
-	gorm.io/gorm v1.22.0 // indirect
+	gorm.io/gorm v1.22.2 // indirect
 )
