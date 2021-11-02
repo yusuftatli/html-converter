@@ -9,13 +9,13 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 
 	"gorm.io/driver/postgres"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
+	"github.com/orgs/mdyazilim/html-converter-new/models"
 	_ "gopkg.in/goracle.v2"
 	"gorm.io/gorm"
 )
@@ -26,51 +26,6 @@ var withHedaer = true
 var local = true
 var mainRoot string = ""
 var _conn string = ""
-
-type masterproduct struct {
-	Id         uint64    `gorm:"primaryKey"`
-	Processid  string    `gorm:"column:processid"`
-	MasterKod  string    `gorm:"column:malzemecode"`
-	Tipi       string    `gorm:"column:tipi"`
-	Uy         string    `gorm:"column:uy"`
-	Aciklama   string    `gorm:"column:aciklama"`
-	Tedarikci  string    `gorm:"column:tedarikci"`
-	Fiyat      string    `gorm:"column:fiyat"`
-	Parabirimi string    `gorm:"column:parabirimi"`
-	CreatedAt  time.Time `gorm:"column:created_at"`
-	UpdatedAt  time.Time ` gorm:"column:updated_at"`
-}
-
-type detailproduct struct {
-	Id         uint64 `gorm:"primaryKey"`
-	Processid  string `gorm:"column:processid"`
-	MasteriId  uint64 `gorm:"column:masterid"`
-	MasterKod  string `gorm:"column:masterkod"`
-	DetayId    uint64 `gorm:"column:detayid"`
-	Tipi       string `gorm:"column:tipi"`
-	Malzeme    string `gorm:"column:malzeme"`
-	Aciklama   string `gorm:"column:aciklama"`
-	Sarf       string `gorm:"column:sarf"`
-	Fire       string `gorm:"column:fire"`
-	Brm        string `gorm:"column:brm"`
-	MMO        string `gorm:"column:mmo"`
-	PMO        string `gorm:"column:pmo"`
-	PFO        string `gorm:"column:pfo"`
-	EskFormülü string `gorm:"column:eskformulu"`
-	Malz       string `gorm:"column:aciklama"`
-	FOT        string `gorm:"column:fot"`
-	Pros       string `gorm:"column:pros"`
-	MOT        string `gorm:"column:mot"`
-	Fiyat      string `gorm:"column:fiyat"`
-	Maliyetsa  string `gorm:"column:maliyetsa"`
-	OpSuresi   string `gorm:"column:opsuresi"`
-	ÇevrimAdet string `gorm:"column:cevrimadet"`
-	ProsNet    string `gorm:"column:prossnet"`
-	Prosfile   string `gorm:"column:prosfile"`
-	Toplam     string `gorm:"column:toplam"`
-	Tedarikci  string `gorm:"column:tedarikci"`
-}
-
 type OrderDto struct {
 	col0,
 	col1,
@@ -124,11 +79,11 @@ func main() {
 		// fmt.Println(parsedHTML)
 		// content, _ := ioutil.ReadFile(path2)
 		if strings.Contains(file.Name(), "ht") {
-			fmt.Println("file==>", file.Name())
+			log.Println(file.Name() + " => " + "Okunuyor...")
 			newid := uuid.New()
 			goGet3(string(htmlBytes), file.Name(), newid.String())
-			fmt.Println(file.Name() + " => " + "Okundu")
-			//   moveFile("./pages/"+fileName, "./readedPage/"+fileName)
+			log.Println(file.Name() + " => " + "Okundu...")
+		    // moveFile("./pages/"+file.Name(), "./readedPage/"+file.Name())
 		}
 	}
 	// fmt.Println("job started")
@@ -157,7 +112,33 @@ func main() {
 //     }
 // }
 
+func GetDataFromHtml(data string, pattern string) string {
+    doc, _ := goquery.NewDocumentFromReader(strings.NewReader(data))
+	s := doc.Find(pattern)
+	html, _ := s.Html()
+    return html
+}
+
+func splitTr(value string) []string {
+    return strings.Split(value,"<tr>")
+}
+
+func getHeaderData(data string) (string, string){
+    hedarData := GetDataFromHtml(data, "html body table tr td table")
+    hedarData = strings.ReplaceAll(hedarData, "</td>", "</td>\n")
+    // hedarData = strings.ReplaceAll(hedarData,"<tbody>","")
+    // hedarData = strings.ReplaceAll(hedarData,"<td=\"\"","")
+    // hedarData = strings.ReplaceAll(hedarData,"<tr>","")
+    // hedarData = strings.ReplaceAll(hedarData,"</tr>","")
+    // hedarData = strings.ReplaceAll(hedarData,"</tbody>","")
+    re := regexp.MustCompile(`<td.*?>(.*)</td>`)
+    res := re.FindAllStringSubmatch(hedarData, -1)
+    return res[2][1], res[8][1]
+}
+
 func goGet3(data string, fileName string, uniqueID string) {
+   _packageCreataDate, _packageNumber := getHeaderData(data)
+
 	var orders []OrderDto
 	columns := OrderDto{}
 	columns.col0 = "col0"
@@ -179,15 +160,12 @@ func goGet3(data string, fileName string, uniqueID string) {
 	columns.col16 = "col16"
 	columns.col17 = "col17"
 	columns.col18 = "col18"
-
 	orders = append(orders, *&columns)
-	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(data))
-	s := doc.Find("table tr td table tr td table")
-	html, _ := s.Html()
+	html := GetDataFromHtml(data, "table tr td table tr td table")
 	parsedHtml := strings.Split(html, "<td class=\"BG0 S\" colspan=\"9\">")
 	for _, masterRow := range parsedHtml {
 		writeValue(masterRow)
-		firstSplit := strings.Split(masterRow, "td class=\"BG1 S\" colspan=\"16\"")
+		firstSplit := strings.Split(masterRow, "<td class=\"BG1 S\" colspan=\"16\">")
 		for _, firstRow := range firstSplit {
 			writeValue(firstRow)
 			if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"15\">") {
@@ -268,7 +246,31 @@ func goGet3(data string, fileName string, uniqueID string) {
 										}
 									}
 								}
-							} else {
+							}else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
+                                splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
+                                for _, bgorow := range splitbgos15 {
+                                    trSplitdata := strings.Split(bgorow, "<tr>")
+                                    for _, row := range trSplitdata {
+                                        writeValue(row)
+                                        _index := "0"
+                                        if strings.Contains(row, "class=\"BG0") {
+                                            _index = "2"
+                                        } else if strings.Contains(row, "class=\"BG1") {
+                                            _index = "4"
+                                        } else if strings.Contains(row, "class=\"BG2\">") {
+                                            _index = "5"
+                                        } else if strings.Contains(row, "class=\"BG2 S") {
+                                            _index = "2"
+                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                            _index = "3"
+                                        }
+                                        val := parseData(row, _index, withHedaer)
+                                        if fieldControl(val) {
+                                            orders = append(orders, *val)
+                                        }
+                                    }
+                                }
+                            } else {
 								trSplitdata := strings.Split(thirdData, "<tr>")
 								for _, row := range trSplitdata {
 									writeValue(row)
@@ -291,7 +293,57 @@ func goGet3(data string, fileName string, uniqueID string) {
 								}
 							}
 						}
-					} else {
+					}else if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"15\">") {
+						splitbgos15 := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"15\">")
+						for _, bgorow := range splitbgos15 {
+							writeValue(bgorow)
+							if strings.Contains(bgorow, "<td class=\"BG1 S\" colspan=\"16\">") {
+								splitBg016 := strings.Split(bgorow, "<td class=\"BG1 S\" colspan=\"16\">")
+								for _, bg2Data := range splitBg016 {
+									writeValue(bg2Data)
+									trSplitdata := strings.Split(bg2Data, "<tr>")
+									for _, row := range trSplitdata {
+										writeValue(row)
+										_index := "0"
+										if strings.Contains(row, "class=\"BG0") {
+											_index = "3"
+										} else if strings.Contains(row, "class=\"BG1") {
+											_index = "4"
+										} else if strings.Contains(row, "class=\"BG2") {
+											_index = "5"
+										} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+											_index = "3"
+										}
+										val := parseData(row, _index, withHedaer)
+										if fieldControl(val) {
+											orders = append(orders, *val)
+										}
+									}
+								}
+							} else {
+								trSplitdata := strings.Split(bgorow, "<tr>")
+								for _, row := range trSplitdata {
+									writeValue(row)
+									_index := "0"
+									if strings.Contains(row, "class=\"BG0") {
+										_index = "3"
+									} else if strings.Contains(row, "class=\"BG1") {
+										_index = "4"
+									} else if strings.Contains(row, "class=\"BG2\">") {
+										_index = "5"
+									} else if strings.Contains(row, "class=\"BG2 S") {
+										_index = "2"
+									} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+										_index = "3"
+									}
+									val := parseData(row, _index, withHedaer)
+									if fieldControl(val) {
+										orders = append(orders, *val)
+									}
+								}
+							}
+						}
+                    }else {
 						trSplitdata := strings.Split(secondRow, "<tr>")
 						for _, row := range trSplitdata {
 							writeValue(row)
@@ -301,7 +353,7 @@ func goGet3(data string, fileName string, uniqueID string) {
 							} else if strings.Contains(row, "class=\"BG1") {
 								_index = "1"
 							} else if strings.Contains(row, "class=\"BG2") {
-								_index = "2"
+                                _index = "2"
 							} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
 								_index = "3"
 							}
@@ -325,7 +377,7 @@ func goGet3(data string, fileName string, uniqueID string) {
 						} else if strings.Contains(row, "class=\"BG1") {
 							_index = "1"
 						} else if strings.Contains(row, "class=\"BG2") {
-							_index = "2"
+                            _index = "2"
 						} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
 							_index = "3"
 						}
@@ -335,7 +387,7 @@ func goGet3(data string, fileName string, uniqueID string) {
 						}
 					}
 				}
-			} else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"14\">") {
+			}else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"14\">") {
 				splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")
 				for _, bg2Data := range splitData {
 					writeValue(bg2Data)
@@ -358,7 +410,127 @@ func goGet3(data string, fileName string, uniqueID string) {
 						}
 					}
 				}
-			} else {
+			}else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"13\">") {
+				splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"13\">")
+				for _, bg2Data := range splitData {
+					writeValue(bg2Data)
+					trSplitdata := strings.Split(bg2Data, "<tr>")
+					for _, row := range trSplitdata {
+						writeValue(row)
+						_index := "0"
+						if strings.Contains(row, "class=\"BG0") {
+							_index = "2"
+						} else if strings.Contains(row, "class=\"BG1") {
+							_index = "1"
+						} else if strings.Contains(row, "class=\"BG2") {
+							_index = "2"
+						} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+							_index = "3"
+						}
+						val := parseData(row, _index, withHedaer)
+						if fieldControl(val) {
+							orders = append(orders, *val)
+						}
+					}
+				}
+			}else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"17\">") {
+				splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"17\">")
+				for _, bg2Data := range splitData {
+					writeValue(bg2Data)
+					trSplitdata := strings.Split(bg2Data, "<tr>")
+					for _, row := range trSplitdata {
+						writeValue(row)
+						_index := "0"
+						if strings.Contains(row, "class=\"BG0") {
+							_index = "2"
+						} else if strings.Contains(row, "class=\"BG1") {
+							_index = "1"
+						} else if strings.Contains(row, "class=\"BG2") {
+							_index = "2"
+						} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+							_index = "3"
+						}
+						val := parseData(row, _index, withHedaer)
+						if fieldControl(val) {
+							orders = append(orders, *val)
+						}
+					}
+				}
+            }else if strings.Contains(firstRow, "<td class=\"BG0 S\" colspan=\"15\">") {
+                splitbgos15 := strings.Split(firstRow, "<td class=\"BG0 S\" colspan=\"15\">")
+                for _, bgorow := range splitbgos15 {
+                    writeValue(bgorow)
+                    if strings.Contains(bgorow, "<td class=\"BG1 S\" colspan=\"16\">") {
+                        splitBg016 := strings.Split(bgorow, "<td class=\"BG1 S\" colspan=\"16\">")
+                        for _, bg2Data := range splitBg016 {
+                            writeValue(bg2Data)
+                            trSplitdata := strings.Split(bg2Data, "<tr>")
+                            for _, row := range trSplitdata {
+                                writeValue(row)
+                                _index := "0"
+                                if strings.Contains(row, "class=\"BG0") {
+                                    _index = "3"
+                                } else if strings.Contains(row, "class=\"BG1") {
+                                    _index = "4"
+                                } else if strings.Contains(row, "class=\"BG2") {
+                                    _index = "5"
+                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                    _index = "3"
+                                }
+                                val := parseData(row, _index, withHedaer)
+                                if fieldControl(val) {
+                                    orders = append(orders, *val)
+                                }
+                            }
+                        }
+                    } else {
+                        trSplitdata := strings.Split(bgorow, "<tr>")
+                        for _, row := range trSplitdata {
+                            writeValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "3"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "4"
+                            } else if strings.Contains(row, "class=\"BG2\">") {
+                                _index = "5"
+                            } else if strings.Contains(row, "class=\"BG2 S") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := parseData(row, _index, withHedaer)
+                            if fieldControl(val) {
+                                orders = append(orders, *val)
+                            }
+                        }
+                    }
+                }
+            }else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
+                splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
+                for _, bgorow := range splitbgos15 {
+                    trSplitdata := strings.Split(bgorow, "<tr>")
+                    for _, row := range trSplitdata {
+                        writeValue(row)
+                        _index := "0"
+                        if strings.Contains(row, "class=\"BG0") {
+                            _index = "2"
+                        } else if strings.Contains(row, "class=\"BG1") {
+                            _index = "4"
+                        } else if strings.Contains(row, "class=\"BG2\">") {
+                            _index = "5"
+                        } else if strings.Contains(row, "class=\"BG2 S") {
+                            _index = "2"
+                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                            _index = "3"
+                        }
+                        val := parseData(row, _index, withHedaer)
+                        if fieldControl(val) {
+                            orders = append(orders, *val)
+                        }
+                    }
+                }
+            }else {
 				trSplitdata := strings.Split(firstRow, "<tr>")
 				for _, row := range trSplitdata {
 					writeValue(row)
@@ -368,11 +540,10 @@ func goGet3(data string, fileName string, uniqueID string) {
 					} else if strings.Contains(row, "class=\"BG1") {
 						_index = "1"
 					} else if strings.Contains(row, "class=\"BG2") {
-						_index = "2"
+                        _index = "2"
 					} else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
 						_index = "3"
 					}
-
 					val := parseData(row, _index, withHedaer)
 					if fieldControl(val) {
 						orders = append(orders, *val)
@@ -381,8 +552,8 @@ func goGet3(data string, fileName string, uniqueID string) {
 			}
 		}
 	}
-	saveTabels(orders, uniqueID)
-	writeToExcel(orders, fileName)
+	saveTabels(orders, uniqueID, _packageCreataDate, _packageNumber)
+	writeToExcel(orders, fileName, _packageCreataDate, _packageNumber)
 }
 
 func fieldControl(row *OrderDto) bool {
@@ -405,7 +576,7 @@ func parseData(value string, dept string, header bool) *OrderDto {
 	if strings.Contains(value, "<tbody>") && strings.Contains(value, "<table>") {
 		e.col0 = ""
 	} else {
-		value = strings.ReplaceAll(value, "</td>", "</td>\n")
+		 value = strings.ReplaceAll(value, "</td>", "</td>\n")
 		//   value = strings.ReplaceAll(value,"</tr>","")
 		//  value = strings.ReplaceAll(value,"class=\"BG0\"","")
 		//  value = strings.ReplaceAll(value,"class=\"BG0\"","")
@@ -474,7 +645,7 @@ func isCheckSpace(value string) string {
 	}
 }
 
-func writeToExcel(orders []OrderDto, fileName string) {
+func writeToExcel(orders []OrderDto, fileName string, _packageCreataDate string, _packageNumber string) {
 
 	f := excelize.NewFile()
 	index := f.NewSheet("Sheet1")
@@ -501,6 +672,9 @@ func writeToExcel(orders []OrderDto, fileName string) {
 		f.SetCellValue("Sheet1", "Q"+strconv.Itoa(count), element.col15)
 		f.SetCellValue("Sheet1", "R"+strconv.Itoa(count), element.col16)
 		f.SetCellValue("Sheet1", "S"+strconv.Itoa(count), element.col17)
+        f.SetCellValue("Sheet1", "S"+strconv.Itoa(count), element.col17)
+        f.SetCellValue("Sheet1", "T"+strconv.Itoa(count), _packageCreataDate)
+        f.SetCellValue("Sheet1", "U"+strconv.Itoa(count), _packageNumber)
 		count++
 	}
 	// Set active sheet of the workbook.
@@ -539,11 +713,11 @@ func CloseDBConnection(db *gorm.DB) {
 	// fmt.Println(con.Ping())
 }
 
-func saveTabels(orders []OrderDto, uniqueID string) {
+func saveTabels(orders []OrderDto, uniqueID string, _packageCreataDate string, _packageNumber string) {
     if(!_prod){
 	    db := ConnectDB()
-	    _ = db.AutoMigrate( & masterproduct {})
-	    _ = db.AutoMigrate( & detailproduct {})
+	    _ = db.AutoMigrate( & models.MasterProduct {})
+	    _ = db.AutoMigrate( & models.DetailProduct {})
     }
 	var header_1 OrderDto
 	var header_2 OrderDto
@@ -570,7 +744,7 @@ func saveTabels(orders []OrderDto, uniqueID string) {
 			}
 			masterId = 0
 			masterCode = ""
-			master := converToMasterDto(masterRow, uniqueID)
+			master := converToMasterDto(masterRow, uniqueID, _packageCreataDate, _packageNumber)
             if(_prod){
                 masterId = CrateMaster(master)
                 masterId = master.Id
@@ -620,12 +794,14 @@ func GetInsertType(masterRow OrderDto) string {
 		return "Topl_4"
 	} else if strings.Contains(masterRow.col4, "Esk") {
 		return "Esk"
+	}else if strings.Contains(masterRow.col2, "Esk") {
+		return "Eskcol2"
 	} else {
 		return "none"
 	}
 }
-func converToMasterDto(orders OrderDto, uniqueID string) *masterproduct {
-	result := masterproduct{}
+func converToMasterDto(orders OrderDto, uniqueID string, _packageCreataDate string, _packageNumber string) *models.MasterProduct {
+	result := models.MasterProduct{}
 	result.Tipi = orders.col1
 	result.Uy = orders.col3
 	result.Processid = uniqueID
@@ -634,13 +810,15 @@ func converToMasterDto(orders OrderDto, uniqueID string) *masterproduct {
 	result.Tedarikci = orders.col6
 	result.Fiyat = orders.col7
 	result.Parabirimi = orders.col8
+    result.PackageCretaDate = _packageCreataDate
+    result.PackageNumber = _packageNumber
 	return &result
 }
-func converToDetailDto_dept_1(orders OrderDto, uniqueID string, masterid uint64, detayid uint64, header OrderDto, masterCode string) *detailproduct {
+func converToDetailDto_dept_1(orders OrderDto, uniqueID string, masterid uint64, detayid uint64, header OrderDto, masterCode string) *models.DetailProduct {
 	insertType := GetInsertType(orders)
 	writeValue(insertType)
     writeValue(header.col5)
-	result := detailproduct{}
+	result := models.DetailProduct{}
 	result.MasteriId = masterid
 	result.Processid = uniqueID
 	result.MasterKod = masterCode
@@ -687,7 +865,7 @@ func converToDetailDto_dept_1(orders OrderDto, uniqueID string, masterid uint64,
 		}
 	} else if insertType == "Proses" {
 		result.Aciklama = orders.col2
-		result.EskFormülü = strings.ReplaceAll(orders.col3, "*[TRY]", "")
+		result.EskFormülü = orders.col3
 		result.Maliyetsa = orders.col4
 		result.OpSuresi = orders.col5
 		result.ÇevrimAdet = orders.col6
@@ -735,17 +913,29 @@ func converToDetailDto_dept_1(orders OrderDto, uniqueID string, masterid uint64,
 		result.EskFormülü = strings.ReplaceAll(orders.col2, "*[TRY]", "")
 		result.Fiyat = orders.col3
 	}
+    if(header.col2 == "Esk.Formülü"){
+        result.Aciklama = orders.col1
+        result.EskFormülü = orders.col2
+        result.Fiyat = orders.col3
+
+    }
+    if(header.col3 == "Esk.Formülü"){
+        result.Aciklama = orders.col1
+        result.EskFormülü = orders.col2
+        result.Fiyat = orders.col3
+
+    }
 	return &result
 }
 
-func CrateMaster(master *masterproduct) uint64 {
+func CrateMaster(master *models.MasterProduct) uint64 {
 	db, err := sql.Open("goracle", _conn)
 	if err != nil {
 		fmt.Println("... DB Setup Failed")
 		fmt.Println(err)
 	}
 	defer db.Close()
-	dbQuery := ""
+	dbQuery := "EXECUTE MASTERPRODUCT_INSERT('"+master.Processid+"','"+master.MasterKod+"','"+master.Tipi+"','"+master.Uy+"','"+master.Aciklama+"','"+master.Tedarikci+"','"+master.Fiyat+"','"+master.Parabirimi+"');"
 
 	rows, err := db.Query(dbQuery)
 	if err != nil {
@@ -756,14 +946,14 @@ func CrateMaster(master *masterproduct) uint64 {
 	return 1
 }
 
-func CrateDetail(detail *detailproduct) {
+func CrateDetail(detail *models.DetailProduct) {
 	db, err := sql.Open("goracle", _conn)
 	if err != nil {
 		fmt.Println("... DB Setup Failed")
 		fmt.Println(err)
 	}
 	defer db.Close()
-	dbQuery := ""
+	dbQuery := "EXECUTE MASTERPRODUCT_INSERT('deefef','azra','ayhan','yusuf','halime','ayhan','halime','yaşam');"
 
 	rows, err := db.Query(dbQuery)
 	if err != nil {
@@ -774,7 +964,7 @@ func CrateDetail(detail *detailproduct) {
 }
 
 
-func WriteDetailData(detaildata *detailproduct){
+func WriteDetailData(detaildata *models.DetailProduct){
     if(_prod){
         CrateDetail(detaildata)
     }else{
