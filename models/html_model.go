@@ -1,12 +1,15 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 
 type MasterProduct struct {
 	Id         uint64    `gorm:"primaryKey"`
 	Processid  string    `gorm:"column:processid"`
 	MasterKod  string    `gorm:"column:malzemecode"`
+	FileName   string		 `gorm:"column:filename"`
 	Tipi       string    `gorm:"column:tipi"`
 	Uy         string    `gorm:"column:uy"`
 	Aciklama   string    `gorm:"column:aciklama"`
@@ -47,4 +50,26 @@ type DetailProduct struct {
 	Prosfile   string `gorm:"column:prosfile"`
 	Toplam     string `gorm:"column:toplam"`
 	Tedarikci  string `gorm:"column:tedarikci"`
+}
+
+type ExcelDto struct {
+	Col0 string
+	Col1 string	
+	Col2 string
+	Col3 string
+	Col4 string
+	Col5 string
+	Col6 string
+	Col7 string
+	Col8 string
+	Col9 string
+	Col10 string
+	Col11 string
+	Col12 string
+	Col13 string
+	Col14 string
+	Col15 string
+	Col16 string
+	Col17 string
+	Col18 string
 }
