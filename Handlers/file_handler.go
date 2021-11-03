@@ -5,17 +5,15 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strconv"
-
-	"github.com/orgs/mdyazilim/html-converter-new/common"
 )
 
 //fileName: dosyanın adı
 func MoveFile(fileName string) error {
     var err error
-    _movePath, err := strconv.ParseBool(common.GetEnvironment().MovePath)
-    if (_movePath) {
-        err = os.Rename(common.GetEnvironment().MainRoot + "./pages/" + fileName, common.GetEnvironment().MainRoot + "./readedPage/" + fileName)
+    _movePath := os.Getenv("MOVE_PATH")
+    _mainRoot :=  os.Getenv("MAIN_ROOT")
+    if (_movePath == "true") {
+        err = os.Rename(_mainRoot + "./pages/" + fileName, _mainRoot + "./readedPage/" + fileName)
     }
     return err
 }

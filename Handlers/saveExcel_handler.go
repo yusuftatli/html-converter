@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
-	"github.com/orgs/mdyazilim/html-converter-new/common"
 	"github.com/orgs/mdyazilim/html-converter-new/models"
 )
 
@@ -43,7 +43,8 @@ func SaveToExcel(orders[] models.ExcelDto, fileName string, _packageCreataDate s
 			count++
 	}
 	f.SetActiveSheet(index)
-	if err := f.SaveAs(common.GetEnvironment().MainRoot + "exels/" + fileName + ".xlsx");err != nil {
+	_mainRoot := os.Getenv("MAIN_ROOT")
+	if err := f.SaveAs(_mainRoot + "exels/" + fileName + ".xlsx");err != nil {
 			fmt.Println(err)
 	}
 }

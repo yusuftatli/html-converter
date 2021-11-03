@@ -2,12 +2,11 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/orgs/mdyazilim/html-converter-new/common"
 	"github.com/orgs/mdyazilim/html-converter-new/models"
 )
 
@@ -46,8 +45,8 @@ func GetInsertType(masterRow models.ExcelDto) string {
 }
 
 func WriteValue(value string) {
-	 _writeValue, _ := strconv.ParseBool(common.GetEnvironment().WriteValue)
-    if _writeValue {
+	 _writeValue := os.Getenv("WRITE_VALUES")
+    if _writeValue == "true" {
         fmt.Println("-------------------------------------")
         fmt.Println(value)
     }
@@ -93,8 +92,8 @@ func ParseData(value string, dept string) * models.ExcelDto {
             //  value = strings.ReplaceAll(value,"class=\"BG0 R FP1\"","")
         re := regexp.MustCompile(`<td.*?>(.*)</td>`)
         e.Col18 = dept
-				_writeHeaders, _ := strconv.ParseBool(common.GetEnvironment().WriteHeaders)
-        if _writeHeaders && strings.Contains(value, "th") {
+				_writeHeaders := os.Getenv("WRITE_HEADERS")
+        if _writeHeaders == "true" && strings.Contains(value, "th") {
             value = strings.ReplaceAll(value, "</th>", "</th>\n")
             re = regexp.MustCompile(`<th.*?>(.*)</th>`)
             e.Col18 = dept + "_header_"

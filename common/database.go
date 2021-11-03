@@ -2,13 +2,15 @@ package common
 
 import (
 	"log"
+	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func ConnectDB() * gorm.DB {
-	db, err := gorm.Open(postgres.Open(GetEnvironment().PostgreDatabaseUrl), & gorm.Config {})
+	_cnn := os.Getenv("POSTGRE_DATABASE_URL")
+	db, err := gorm.Open(postgres.Open(_cnn), & gorm.Config {})
 	if err != nil {
 			log.Fatal(err)
 			return nil

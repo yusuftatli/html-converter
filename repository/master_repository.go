@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"strconv"
+	"os"
 
 	"github.com/orgs/mdyazilim/html-converter-new/common"
 	"github.com/orgs/mdyazilim/html-converter-new/models"
@@ -14,8 +14,8 @@ func SaveMaster(masterData * models.MasterProduct) (uint64, string, error) {
     var _masterId uint64
     var _masterCode string
     var err error
-    _prod, _ := strconv.ParseBool(common.GetEnvironment().Production)
-    if (!_prod) {
+    _prod := os.Getenv("PRODUCTION")
+    if (_prod == "false") {
         _masterId, _masterCode, err = savePostgreMaster(masterData)
     } else {
         _masterId, _masterCode, err =  saveOracleMaster(masterData)
@@ -34,7 +34,7 @@ func savePostgreMaster(masterData * models.MasterProduct) (uint64, string, error
 }
 
 func saveOracleMaster(masterData *models.MasterProduct) (uint64, string, error) {
-    db, err := sql.Open("goracle", common.GetEnvironment().OracleDatabaseUrl)
+    db, err := sql.Open("goracle", os.Getenv("ORACLE_DATABASE_URL"))
     if err != nil {
         fmt.Println("... DB Setup Failed")
         fmt.Println(err)

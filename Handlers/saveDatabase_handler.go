@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"strconv"
+	"os"
 	"strings"
 
 	"github.com/orgs/mdyazilim/html-converter-new/common"
@@ -13,8 +13,8 @@ import (
 
 
 func SaveToDatabase(orders []models.ExcelDto, uniqueID string, _packageCreataDate string, _packageNumber string, fileName string) (error) {
-	_prod, _ := strconv.ParseBool(common.GetEnvironment().Production)
-	if (!_prod) {
+	_prod := os.Getenv("PRODUCTION")
+	if (_prod == "false") {
 			db := common.ConnectDB()
 			_ = db.AutoMigrate( & models.MasterProduct {})
 			_ = db.AutoMigrate( & models.DetailProduct {})

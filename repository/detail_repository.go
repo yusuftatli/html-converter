@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"log"
-	"strconv"
+	"os"
 
 	"github.com/orgs/mdyazilim/html-converter-new/common"
 	"github.com/orgs/mdyazilim/html-converter-new/models"
@@ -12,8 +12,8 @@ import (
 
 func SaveDetail(masterData * models.DetailProduct) (error) {
 	var err error
-	_prod, _ := strconv.ParseBool(common.GetEnvironment().Production)
-	if (!_prod) {
+	_prod := os.Getenv("PRODUCTION")
+	if (_prod == "false") {
 			err = savePostgreDetail(masterData)
 	} else {
 		err =  saveOracleDetail(masterData)
@@ -33,7 +33,7 @@ func savePostgreDetail(data * models.DetailProduct) (error) {
 }
 
 func saveOracleDetail(data *models.DetailProduct) ( error) {
-	db, err := sql.Open("goracle", common.GetEnvironment().OracleDatabaseUrl)
+	db, err := sql.Open("goracle", os.Getenv("ORACLE_DATABASE_URL"))
 	if err != nil {
 		return err
 	}
