@@ -26,12 +26,12 @@ func main() {
         // ORACLE_DATABASE_URL=
     os.Setenv("ORACLE_DATABASE_URL", "")
         // MAIN_ROOT="/Users/tcytatli/Documents/md/prod/"
-    os.Setenv("MAIN_ROOT", "Users/tcytatli/Documents/md/prod/")
+    os.Setenv("MAIN_ROOT", "./")
         // MOVE_PATH=true
-    os.Setenv("MOVE_PATH", "false")
+    os.Setenv("MOVE_PATH", "true")
 
     log.Println("job started")
-    ticker :=  time.NewTicker(time.Second)
+    ticker :=  time.NewTicker(time.Second*100)
     for t :=  range ticker.C {
         log.Println("Job tetiklendi ", t)
             //  fmt.Print("\033[H\033[2J")

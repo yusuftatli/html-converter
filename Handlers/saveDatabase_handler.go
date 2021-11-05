@@ -45,20 +45,20 @@ func SaveToDatabase(orders []models.ExcelDto, uniqueID string, _packageCreataDat
 					masterId, masterCode, _err	= repository.SaveMaster(master)
 					
 			} else if masterRow.Col18 == "1" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, 1, header_1, masterCode)
-					repository.SaveDetail(detaildata)
+					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "1", header_1, masterCode)
+					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
 			} else if masterRow.Col18 == "2" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, 2, header_2, masterCode)
-					repository.SaveDetail(detaildata)
+					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "2", header_2, masterCode)
+					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
 			} else if masterRow.Col18 == "3" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, 3, header_3, masterCode)
-					repository.SaveDetail(detaildata)
+					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "3", header_3, masterCode)
+					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
 			} else if masterRow.Col18 == "4" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, 4, header_4, masterCode)
-					repository.SaveDetail(detaildata)
+					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "4", header_4, masterCode)
+					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
 			} else if masterRow.Col18 == "5" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, 5, header_5, masterCode)
-					repository.SaveDetail(detaildata)
+					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "5", header_5, masterCode)
+					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
 			}
 	}
 	return _err

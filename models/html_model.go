@@ -27,7 +27,7 @@ type DetailProduct struct {
 	Processid  string `gorm:"column:processid"`
 	MasteriId  uint64 `gorm:"column:masterid"`
 	MasterKod  string `gorm:"column:masterkod"`
-	DetayId    uint64 `gorm:"column:detayid"`
+	DetayId    string `gorm:"column:detayid"`
 	Tipi       string `gorm:"column:tipi"`
 	Malzeme    string `gorm:"column:malzeme"`
 	Aciklama   string `gorm:"column:aciklama"`

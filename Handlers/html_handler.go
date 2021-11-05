@@ -443,7 +443,7 @@ func ConverToMasterDto(orders models.ExcelDto, uniqueID string, _packageCreataDa
 	return &result
 }
 
-func ConverToDetailDto(orders models.ExcelDto, uniqueID string, masterid uint64, detayid uint64, header models.ExcelDto, masterCode string) *models.DetailProduct {
+func ConverToDetailDto(orders models.ExcelDto, uniqueID string, masterid uint64, detayid string, header models.ExcelDto, masterCode string) *models.DetailProduct {
 	insertType := utils.GetInsertType(orders)
 	utils.WriteValue(insertType)
 	utils.WriteValue(header.Col5)
@@ -549,9 +549,14 @@ func ConverToDetailDto(orders models.ExcelDto, uniqueID string, masterid uint64,
 
     }
     if(header.Col3 == "Esk.Formülü"){
-        result.Aciklama = orders.Col1
-        result.EskFormülü = orders.Col2
-        result.Fiyat = orders.Col3
+			result.Aciklama = orders.Col2
+			result.EskFormülü = orders.Col3
+			result.Maliyetsa = orders.Col4
+			result.OpSuresi = orders.Col5
+			result.ÇevrimAdet = orders.Col6
+			result.ProsNet = orders.Col7
+			result.Prosfile = orders.Col8
+			result.Pros = orders.Col9
 
     }
 	return &result
@@ -559,7 +564,7 @@ func ConverToDetailDto(orders models.ExcelDto, uniqueID string, masterid uint64,
 
 func GetHeaderData(data string)(string, string) {
 	hedarData := utils.GetDataFromHtml(data, "html body table tr td table")
-	hedarData = strings.ReplaceAll(hedarData, "</td>", "</td>\n")
+	// hedarData = strings.ReplaceAll(hedarData, "</td>", "</td>\n")
 	// hedarData = strings.ReplaceAll(hedarData,"<tbody>","")
 	// hedarData = strings.ReplaceAll(hedarData,"<td=\"\"","")
 	// hedarData = strings.ReplaceAll(hedarData,"<tr>","")
