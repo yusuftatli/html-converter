@@ -81,11 +81,11 @@ func ParseData(value string, dept string) * models.ExcelDto {
     if strings.Contains(value, "<tbody>") && strings.Contains(value, "<table>") {
         e.Col0 = ""
     } else {
-        value = strings.ReplaceAll(value, "</td>", "</td>\n")
-                value = strings.ReplaceAll(value,"</tr>","")
+         value = strings.ReplaceAll(value, "</td>", "</td>\n")
+            //    value = strings.ReplaceAll(value,"</tr>","")
             //  value = strings.ReplaceAll(value,"class=\"BG0\"","")
             //  value = strings.ReplaceAll(value,"class=\"BG0\"","")
-            //  value = strings.ReplaceAll(value,"class=\"BG0 L MLZ\"","")
+            //  vaslue = strings.ReplaceAll(value,"class=\"BG0 L MLZ\"","")
             //  value = strings.ReplaceAll(value,"\u00a0</td>","")
             //  value = strings.ReplaceAll(value,"<td >","<td>")
             //  value = strings.ReplaceAll(value,"<td></td>","<td>-</td>")

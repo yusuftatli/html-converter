@@ -50,6 +50,8 @@ type DetailProduct struct {
 	Prosfile   string `gorm:"column:prosfile"`
 	Toplam     string `gorm:"column:toplam"`
 	Tedarikci  string `gorm:"column:tedarikci"`
+	PaketTarihi  string `gorm:"column:pakettarihi"`
+	PaketNumarasi  string `gorm:"column:paketnumarasi"`
 }
 
 type ExcelDto struct {
@@ -73,3 +75,38 @@ type ExcelDto struct {
 	Col17 string
 	Col18 string
 }
+
+type SaveDatabaseDto struct{
+	O []ExcelDto
+	UniqueID string
+	PackageCreataDate string
+	PackageNumber string
+	FileName string
+}
+
+type ConvertDetailDto struct{
+	E ExcelDto
+	UniqueID string
+	Masterid uint64
+	Dept string
+	H ExcelDto
+	MasterCode string
+	PackageCreataDate string
+	PackageNumber string
+}
+
+type ConvertMasterDto struct{
+	E ExcelDto 
+	UniqueID string
+	PackageCreataDate string
+	PackageNumber string 
+	FileName string
+}
+
+const ( 
+	Dept_1 = "1"
+	Dept_2 = "2"
+	Dept_3 = "3"
+	Dept_4 = "4"
+	Dept_5 = "5"
+)

@@ -12,7 +12,20 @@ import (
 )
 
 
-func SaveToDatabase(orders []models.ExcelDto, uniqueID string, _packageCreataDate string, _packageNumber string, fileName string) (error) {
+func SaveToDatabase(model models.SaveDatabaseDto) (error) {
+	masterDto := models.ConvertMasterDto{}
+	detailDto := models.ConvertDetailDto{}
+	
+	detailDto.UniqueID = model.UniqueID
+	detailDto.PackageCreataDate = model.PackageCreataDate
+	detailDto.PackageNumber = model.PackageNumber
+
+	masterDto.UniqueID = model.UniqueID
+	masterDto.PackageCreataDate = model.PackageCreataDate
+	masterDto.PackageNumber = model.PackageNumber 
+	masterDto.FileName = model.FileName
+
+
 	_prod := os.Getenv("PRODUCTION")
 	if (_prod == "false") {
 			db := common.ConnectDB()
@@ -23,9 +36,9 @@ func SaveToDatabase(orders []models.ExcelDto, uniqueID string, _packageCreataDat
 	var masterId uint64 = 0
 	var masterCode string = ""
 	var _err error
-	for _, masterRow := range orders {
+	for _, masterRow := range model.O {
 			utils.WriteValue(masterRow.Col18)
-			if masterRow.Col18 == "1_header_" {
+			if masterRow.Col18 == "1_header_"  {
 					header_1 = masterRow
 			} else if masterRow.Col18 == "2_header_" {
 					header_2 = masterRow
@@ -41,24 +54,50 @@ func SaveToDatabase(orders []models.ExcelDto, uniqueID string, _packageCreataDat
 					}
 					masterId = 0
 					masterCode = ""
-					master := ConverToMasterDto(masterRow, uniqueID, _packageCreataDate, _packageNumber, fileName)
+					masterDto.E = masterRow 
+					master := ConverToMasterDto(masterDto)
 					masterId, masterCode, _err	= repository.SaveMaster(master)
 					
-			} else if masterRow.Col18 == "1" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "1", header_1, masterCode)
-					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
-			} else if masterRow.Col18 == "2" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "2", header_2, masterCode)
-					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
-			} else if masterRow.Col18 == "3" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "3", header_3, masterCode)
-					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
-			} else if masterRow.Col18 == "4" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "4", header_4, masterCode)
-					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
-			} else if masterRow.Col18 == "5" {
-					detaildata := ConverToDetailDto(masterRow, uniqueID, masterId, "5", header_5, masterCode)
-					repository.SaveDetail(detaildata,_packageCreataDate, _packageNumber)
+			} else if masterRow.Col18 == models.Dept_1 {
+				detailDto.E = masterRow
+				detailDto.Masterid = masterId
+				detailDto.Dept = "1"
+				detailDto.H = header_1
+				detailDto.MasterCode = masterCode
+				detaildata := ConverToDetailDto(detailDto)
+				repository.SaveDetail(detaildata)
+			} else if masterRow.Col18 == models.Dept_2 {
+				detailDto.E = masterRow
+				detailDto.Masterid = masterId
+				detailDto.Dept = "2"
+				detailDto.H = header_2
+				detailDto.MasterCode = masterCode
+				detaildata := ConverToDetailDto(detailDto)
+				repository.SaveDetail(detaildata)
+			} else if masterRow.Col18 == models.Dept_3 {
+				detailDto.E = masterRow
+				detailDto.Masterid = masterId
+				detailDto.Dept = "3"
+				detailDto.H = header_3
+				detailDto.MasterCode = masterCode
+				detaildata := ConverToDetailDto(detailDto)
+				repository.SaveDetail(detaildata)
+			} else if masterRow.Col18 == models.Dept_4 {
+				detailDto.E = masterRow
+				detailDto.Masterid = masterId
+				detailDto.Dept = "4"
+				detailDto.H = header_4
+				detailDto.MasterCode = masterCode
+				detaildata := ConverToDetailDto(detailDto)
+				repository.SaveDetail(detaildata)
+			} else if masterRow.Col18 == models.Dept_5 {
+				detailDto.E = masterRow
+				detailDto.Masterid = masterId
+				detailDto.Dept = "5"
+				detailDto.H = header_5
+				detailDto.MasterCode = masterCode
+				detaildata := ConverToDetailDto(detailDto)
+				repository.SaveDetail(detaildata)
 			}
 	}
 	return _err

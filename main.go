@@ -5,10 +5,10 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
 	handlers "github.com/orgs/mdyazilim/html-converter-new/Handlers"
+	"github.com/orgs/mdyazilim/html-converter-new/models"
 	_ "gopkg.in/goracle.v2"
 )
 
@@ -16,7 +16,7 @@ import (
 func main() {
     // common.GetEnvironment()
     // WRITE_VALUES=false
-    os.Setenv("WRITE_VALUES", "false")
+    os.Setenv("WRITE_VALUES", "true")
         // WRITE_HEADERS=true
     os.Setenv("WRITE_HEADERS", "true")
         // PRODUCTION=false
@@ -30,13 +30,14 @@ func main() {
         // MOVE_PATH=true
     os.Setenv("MOVE_PATH", "true")
 
-    log.Println("job started")
-    ticker :=  time.NewTicker(time.Second*100)
-    for t :=  range ticker.C {
-        log.Println("Job tetiklendi ", t)
-            //  fmt.Print("\033[H\033[2J")
-        readFiles()
-    }
+    //  log.Println("job started")
+    //  ticker :=  time.NewTicker(time.Second * 90)
+    //  for t :=  range ticker.C {
+    //      log.Println("Job tetiklendi ", t)
+    //            fmt.Print("\033[H\033[2J")
+    //      readFiles()
+    //  }
+    readFiles()
 }
 
 func readFiles() {
@@ -65,8 +66,14 @@ func readFiles() {
 
 func parseHtml(htmlData string, fileName string, uniqueID string) {
     _packageCreataDate, _packageNumber :=  handlers.GetHeaderData(htmlData)
-    parsedHtmlDataList :=  handlers.GetParsedHtml(htmlData, fileName, uniqueID)
-    handlers.SaveToDatabase(parsedHtmlDataList, uniqueID, _packageCreataDate, _packageNumber, fileName)
+    parsedHtmlDataList :=  handlers.GetParsedHtml(htmlData, fileName, uniqueID, _packageCreataDate, _packageNumber)
+    saveDto := models.SaveDatabaseDto{}
+    saveDto.O = parsedHtmlDataList
+    saveDto.UniqueID = uniqueID
+    saveDto.PackageCreataDate = _packageCreataDate
+    saveDto.PackageNumber = _packageNumber
+    saveDto.FileName = fileName
+    handlers.SaveToDatabase(saveDto)
     handlers.SaveToExcel(parsedHtmlDataList, fileName, _packageCreataDate, _packageNumber)
     handlers.MoveFile(fileName)
 }
