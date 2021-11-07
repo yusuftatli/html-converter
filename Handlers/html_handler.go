@@ -668,24 +668,97 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                 } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">") {
                     splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">")
                     for _,
-                    bg2Data := range splitData {
-                        utils.WriteValue(bg2Data)
-                        trSplitdata := strings.Split(bg2Data, "<tr>")
-                        for _, row := range trSplitdata {
-                            utils.WriteValue(row)
-                            _index := "0"
-                            if strings.Contains(row, "class=\"BG0") {
-                                _index = "3"
-                            } else if strings.Contains(row, "class=\"BG1") {
-                                _index = "1"
-                            } else if strings.Contains(row, "class=\"BG2") {
-                                _index = "2"
-                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                _index = "3"
+                    row15 := range splitData {
+                        utils.WriteValue(row15)
+                        if strings.Contains(row15, "<td class=\"BG2 S\" colspan=\"16\">") {
+                            splitgb216 := strings.Split(row15, "<td class=\"BG2 S\" colspan=\"16\">")
+                            for _,
+                            bg160row := range splitgb216 {
+                                if strings.Contains(bg160row, "<td class=\"BG0 S\" colspan=\"16\">") {
+                                    for _, bg2Data := range strings.Split(bg160row, "<td class=\"BG0 S\" colspan=\"16\">") {
+                                        utils.WriteValue(bg2Data)
+                                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                                        for _, row := range trSplitdata {
+                                            utils.WriteValue(row)
+                                            _index := "0"
+                                            if strings.Contains(row, "class=\"BG0") {
+                                                _index = "3"
+                                            } else if strings.Contains(row, "class=\"BG1") {
+                                                _index = "4"
+                                            } else if strings.Contains(row, "class=\"BG2") {
+                                                _index = "2"
+                                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                                _index = "3"
+                                            }
+                                            val := utils.ParseData(row, _index)
+                                            if utils.FieldControl(val) {
+                                                _ListHtml = append(_ListHtml, * val)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                        trSplitdata := strings.Split(bg160row, "<tr>")
+                                        for _, row := range trSplitdata {
+                                            utils.WriteValue(row)
+                                            _index := "0"
+                                            if strings.Contains(row, "class=\"BG0") {
+                                                _index = "3"
+                                            } else if strings.Contains(row, "class=\"BG1") {
+                                                _index = "1"
+                                            } else if strings.Contains(row, "class=\"BG2") {
+                                                _index = "2"
+                                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                                _index = "3"
+                                            }
+                                            val := utils.ParseData(row, _index)
+                                            if utils.FieldControl(val) {
+                                                _ListHtml = append(_ListHtml, * val)
+                                            }
+                                        }
+                                }
                             }
-                            val := utils.ParseData(row, _index)
-                            if utils.FieldControl(val) {
-                                _ListHtml = append(_ListHtml, * val)
+                        } else if strings.Contains(row15, "<td class=\"BG0 S\" colspan=\"16\">") {
+                            split_data_bg016 := strings.Split(row15, "<td class=\"BG0 S\" colspan=\"16\">")
+                            for _,
+                            bg2Data := range split_data_bg016 {
+                                utils.WriteValue(bg2Data)
+                                trSplitdata := strings.Split(bg2Data, "<tr>")
+                                for _, row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "4"
+                                    } else if strings.Contains(row, "class=\"BG2") {
+                                        _index = "2"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
+                                    }
+                                }
+                            }
+                        } else {
+                                trSplitdata := strings.Split(row15, "<tr>")
+                                for _, row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "1"
+                                    } else if strings.Contains(row, "class=\"BG2") {
+                                        _index = "2"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
+                                    }
                             }
                         }
                     }
@@ -712,7 +785,8 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                 }
 
             }
-        } else if (strings.Contains(masterRow, "<td class=\"BG1 S\" colspan=\"17\">")) {
+        } else
+        if (strings.Contains(masterRow, "<td class=\"BG1 S\" colspan=\"17\">")) {
             split_colspan_17 := strings.Split(masterRow, "<td class=\"BG1 S\" colspan=\"17\">")
             for _,
             colspan_firstdata := range split_colspan_17 {
@@ -843,7 +917,8 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                             }
                         }
                     }
-                } else if (strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">")) {
+                } else
+                if (strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">")) {
                     utils.WriteValue(colspan_firstdata)
                     if strings.Contains(colspan_firstdata, "<td class=\"BG0 S\" colspan=\"15\">") {
                         utils.WriteValue(colspan_firstdata)
@@ -872,6 +947,28 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                                     _ListHtml = append(_ListHtml, * val)
                                 }
                             }
+                        }
+                    }
+                } else if (strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"13\">")) {
+                    splitcol13 := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"13\">")
+                    for _,
+                    row := range splitcol13 {
+                        utils.WriteValue(row)
+                        _index := "0"
+                        if strings.Contains(row, "class=\"BG0") {
+                            _index = "3"
+                        } else if strings.Contains(row, "class=\"BG1") {
+                            _index = "4"
+                        } else if strings.Contains(row, "class=\"BG2\">") {
+                            _index = "2"
+                        } else if strings.Contains(row, "class=\"BG2 S") {
+                            _index = "2"
+                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                            _index = "3"
+                        }
+                        val := utils.ParseData(row, _index)
+                        if utils.FieldControl(val) {
+                            _ListHtml = append(_ListHtml, * val)
                         }
                     }
                 } else {
@@ -1052,259 +1149,104 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
 
             }
         } else if strings.Contains(masterRow, "<td class=\"BG1 S\" colspan=\"14\">") {
-                firstSplit := strings.Split(masterRow, "<td class=\"BG1 S\" colspan=\"14\">")
-                for _,
-                firstRow := range firstSplit {
-                    utils.WriteValue(firstRow)
-                    if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"15\">") {
-                        secondSplit := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"15\">")
-                        for _,
-                        secondRow := range secondSplit {
-                            utils.WriteValue(secondRow)
-                            if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"16\">") {
-                                splitData2 := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"16\">")
-                                for _,
-                                bg0Data := range splitData2 {
-                                    utils.WriteValue(bg0Data)
-                                    trSplitdata := strings.Split(bg0Data, "<tr>")
-                                    for _, row := range trSplitdata {
-                                        utils.WriteValue(row)
-                                        _index := "0"
-                                        if strings.Contains(row, "class=\"BG0") {
-                                            _index = "3"
-                                        } else if strings.Contains(row, "class=\"BG1") {
-                                            _index = "4"
-                                        } else if strings.Contains(row, "class=\"BG2") {
-                                            _index = "2"
-                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                            _index = "3"
-                                        }
-                                        val := utils.ParseData(row, _index)
-                                        if utils.FieldControl(val) {
-                                            _ListHtml = append(_ListHtml, * val)
-                                        }
+            firstSplit := strings.Split(masterRow, "<td class=\"BG1 S\" colspan=\"14\">")
+            for _,
+            firstRow := range firstSplit {
+                utils.WriteValue(firstRow)
+                if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"15\">") {
+                    secondSplit := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"15\">")
+                    for _,
+                    secondRow := range secondSplit {
+                        utils.WriteValue(secondRow)
+                        if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"16\">") {
+                            splitData2 := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"16\">")
+                            for _,
+                            bg0Data := range splitData2 {
+                                utils.WriteValue(bg0Data)
+                                trSplitdata := strings.Split(bg0Data, "<tr>")
+                                for _, row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "4"
+                                    } else if strings.Contains(row, "class=\"BG2") {
+                                        _index = "2"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
                                     }
                                 }
-                            } else if strings.Contains(secondRow, "<td class=\"BG2 S\" colspan=\"16\">") {
-                                splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")
-                                for _,
-                                bg2Data := range splitData {
-                                    utils.WriteValue(bg2Data)
-                                    trSplitdata := strings.Split(bg2Data, "<tr>")
-                                    for _, row := range trSplitdata {
-                                        utils.WriteValue(row)
-                                        _index := "0"
-                                        if strings.Contains(row, "class=\"BG0") {
-                                            _index = "3"
-                                        } else if strings.Contains(row, "class=\"BG1") {
-                                            _index = "1"
-                                        } else if strings.Contains(row, "class=\"BG2") {
-                                            _index = "2"
-                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                            _index = "3"
-                                        }
-                                        val := utils.ParseData(row, _index)
-                                        if utils.FieldControl(val) {
-                                            _ListHtml = append(_ListHtml, * val)
-                                        }
+                            }
+                        } else if strings.Contains(secondRow, "<td class=\"BG2 S\" colspan=\"16\">") {
+                            splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")
+                            for _,
+                            bg2Data := range splitData {
+                                utils.WriteValue(bg2Data)
+                                trSplitdata := strings.Split(bg2Data, "<tr>")
+                                for _, row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "1"
+                                    } else if strings.Contains(row, "class=\"BG2") {
+                                        _index = "2"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
                                     }
                                 }
+                            }
 
-                            } else if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"14\">") {
-                                    splitDataThird := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"14\">")
+                        } else if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"14\">") {
+                            splitDataThird := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"14\">")
+                            for _,
+                            thirdData := range splitDataThird {
+                                utils.WriteValue(thirdData)
+                                if strings.Contains(thirdData, "<td class=\"BG1 S\" colspan=\"16\">") {
+                                    splitBg016 := strings.Split(thirdData, "<td class=\"BG1 S\" colspan=\"16\">")
                                     for _,
-                                    thirdData := range splitDataThird {
-                                        utils.WriteValue(thirdData)
-                                        if strings.Contains(thirdData, "<td class=\"BG1 S\" colspan=\"16\">") {
-                                            splitBg016 := strings.Split(thirdData, "<td class=\"BG1 S\" colspan=\"16\">")
-                                            for _,
-                                            bg2Data := range splitBg016 {
-                                                utils.WriteValue(bg2Data)
-                                                trSplitdata := strings.Split(bg2Data, "<tr>")
-                                                for _, row := range trSplitdata {
-                                                    utils.WriteValue(row)
-                                                    _index := "0"
-                                                    if strings.Contains(row, "class=\"BG0") {
-                                                        _index = "3"
-                                                    } else if strings.Contains(row, "class=\"BG1") {
-                                                        _index = "4"
-                                                    } else if strings.Contains(row, "class=\"BG2") {
-                                                        _index = "5"
-                                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                        _index = "3"
-                                                    }
-                                                    val := utils.ParseData(row, _index)
-                                                    if utils.FieldControl(val) {
-                                                        _ListHtml = append(_ListHtml, * val)
-                                                    }
-                                                }
+                                    bg2Data := range splitBg016 {
+                                        utils.WriteValue(bg2Data)
+                                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                                        for _, row := range trSplitdata {
+                                            utils.WriteValue(row)
+                                            _index := "0"
+                                            if strings.Contains(row, "class=\"BG0") {
+                                                _index = "3"
+                                            } else if strings.Contains(row, "class=\"BG1") {
+                                                _index = "4"
+                                            } else if strings.Contains(row, "class=\"BG2") {
+                                                _index = "5"
+                                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                                _index = "3"
                                             }
-                                        } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
-                                            splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
-                                            for _,
-                                            bgorow := range splitbgos15 {
-                                                trSplitdata := strings.Split(bgorow, "<tr>")
-                                                for _,
-                                                row := range trSplitdata {
-                                                    utils.WriteValue(row)
-                                                    _index := "0"
-                                                    if strings.Contains(row, "class=\"BG0") {
-                                                        _index = "2"
-                                                    } else if strings.Contains(row, "class=\"BG1") {
-                                                        _index = "4"
-                                                    } else if strings.Contains(row, "class=\"BG2\">") {
-                                                        _index = "5"
-                                                    } else if strings.Contains(row, "class=\"BG2 S") {
-                                                        _index = "2"
-                                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                        _index = "3"
-                                                    }
-                                                    val := utils.ParseData(row, _index)
-                                                    if utils.FieldControl(val) {
-                                                        _ListHtml = append(_ListHtml, * val)
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            trSplitdata := strings.Split(thirdData, "<tr>")
-                                            for _,
-                                            row := range trSplitdata {
-                                                utils.WriteValue(row)
-                                                _index := "0"
-                                                if strings.Contains(row, "class=\"BG0") {
-                                                    _index = "3"
-                                                } else if strings.Contains(row, "class=\"BG1") {
-                                                    _index = "4"
-                                                } else if strings.Contains(row, "class=\"BG2\">") {
-                                                    _index = "5"
-                                                } else if strings.Contains(row, "class=\"BG2 S") {
-                                                    _index = "2"
-                                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                    _index = "3"
-                                                }
-                                                val := utils.ParseData(row, _index)
-                                                if utils.FieldControl(val) {
-                                                    _ListHtml = append(_ListHtml, * val)
-                                                }
+                                            val := utils.ParseData(row, _index)
+                                            if utils.FieldControl(val) {
+                                                _ListHtml = append(_ListHtml, * val)
                                             }
                                         }
                                     }
-                                } else if (strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"15\">")) {
-                                    splitDataThird := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"14\">")
+                                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
+                                    splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
                                     for _,
-                                    thirdData := range splitDataThird {
-                                        utils.WriteValue(thirdData)
-                                        if strings.Contains(thirdData, "<td class=\"BG1 S\" colspan=\"16\">") {
-                                            splitBg016 := strings.Split(thirdData, "<td class=\"BG1 S\" colspan=\"16\">")
-                                            for _,
-                                            bg2Data := range splitBg016 {
-                                                utils.WriteValue(bg2Data)
-                                                trSplitdata := strings.Split(bg2Data, "<tr>")
-                                                for _, row := range trSplitdata {
-                                                    utils.WriteValue(row)
-                                                    _index := "0"
-                                                    if strings.Contains(row, "class=\"BG0") {
-                                                        _index = "3"
-                                                    } else if strings.Contains(row, "class=\"BG1") {
-                                                        _index = "3"
-                                                    } else if strings.Contains(row, "class=\"BG2") {
-                                                        _index = "5"
-                                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                        _index = "3"
-                                                    }
-                                                    val := utils.ParseData(row, _index)
-                                                    if utils.FieldControl(val) {
-                                                        _ListHtml = append(_ListHtml, * val)
-                                                    }
-                                                }
-                                            }
-                                        } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
-                                            splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
-                                            for _,
-                                            bgorow := range splitbgos15 {
-                                                trSplitdata := strings.Split(bgorow, "<tr>")
-                                                for _,
-                                                row := range trSplitdata {
-                                                    utils.WriteValue(row)
-                                                    _index := "0"
-                                                    if strings.Contains(row, "class=\"BG0") {
-                                                        _index = "2"
-                                                    } else if strings.Contains(row, "class=\"BG1") {
-                                                        _index = "4"
-                                                    } else if strings.Contains(row, "class=\"BG2\">") {
-                                                        _index = "5"
-                                                    } else if strings.Contains(row, "class=\"BG2 S") {
-                                                        _index = "2"
-                                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                        _index = "3"
-                                                    }
-                                                    val := utils.ParseData(row, _index)
-                                                    if utils.FieldControl(val) {
-                                                        _ListHtml = append(_ListHtml, * val)
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            trSplitdata := strings.Split(thirdData, "<tr>")
-                                            for _,
-                                            row := range trSplitdata {
-                                                utils.WriteValue(row)
-                                                _index := "0"
-                                                if strings.Contains(row, "class=\"BG0") {
-                                                    _index = "3"
-                                                } else if strings.Contains(row, "class=\"BG1") {
-                                                    _index = "4"
-                                                } else if strings.Contains(row, "class=\"BG2\">") {
-                                                    _index = "5"
-                                                } else if strings.Contains(row, "class=\"BG2 S") {
-                                                    _index = "2"
-                                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                    _index = "3"
-                                                }
-                                                val := utils.ParseData(row, _index)
-                                                if utils.FieldControl(val) {
-                                                    _ListHtml = append(_ListHtml, * val)
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else  if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"15\">") {
-                                splitbgos15 := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"15\">")
-                                for _,
-                                bgorow := range splitbgos15 {
-                                    utils.WriteValue(bgorow)
-                                    if strings.Contains(bgorow, "<td class=\"BG1 S\" colspan=\"16\">") {
-                                        splitBg016 := strings.Split(bgorow, "<td class=\"BG1 S\" colspan=\"16\">")
-                                        for _,
-                                        bg2Data := range splitBg016 {
-                                            utils.WriteValue(bg2Data)
-                                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                                            for _, row := range trSplitdata {
-                                                utils.WriteValue(row)
-                                                _index := "0"
-                                                if strings.Contains(row, "class=\"BG0") {
-                                                    _index = "3"
-                                                } else if strings.Contains(row, "class=\"BG1") {
-                                                    _index = "4"
-                                                } else if strings.Contains(row, "class=\"BG2") {
-                                                    _index = "5"
-                                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                                    _index = "3"
-                                                }
-                                                val := utils.ParseData(row, _index)
-                                                if utils.FieldControl(val) {
-                                                    _ListHtml = append(_ListHtml, * val)
-                                                }
-                                            }
-                                        }
-                                    } else {
+                                    bgorow := range splitbgos15 {
                                         trSplitdata := strings.Split(bgorow, "<tr>")
                                         for _,
                                         row := range trSplitdata {
                                             utils.WriteValue(row)
                                             _index := "0"
                                             if strings.Contains(row, "class=\"BG0") {
-                                                _index = "3"
+                                                _index = "2"
                                             } else if strings.Contains(row, "class=\"BG1") {
                                                 _index = "4"
                                             } else if strings.Contains(row, "class=\"BG2\">") {
@@ -1320,273 +1262,10 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                                             }
                                         }
                                     }
-                                }
-                            } else {
-                                trSplitdata := strings.Split(secondRow, "<tr>")
-                                for _,
-                                row := range trSplitdata {
-                                    utils.WriteValue(row)
-                                    _index := "0"
-                                    if strings.Contains(row, "class=\"BG0") {
-                                        _index = "3"
-                                    } else if strings.Contains(row, "class=\"BG1") {
-                                        _index = "1"
-                                    } else if strings.Contains(row, "class=\"BG2") {
-                                        _index = "2"
-                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                        _index = "3"
-                                    }
-                                    val := utils.ParseData(row, _index)
-                                    if utils.FieldControl(val) {
-                                        _ListHtml = append(_ListHtml, * val)
-                                    }
-                                }
-                            }
-                        }
-                    } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"16\">") {
-                        splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "3"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "1"
-                                } else if strings.Contains(row, "class=\"BG2") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"14\">") {
-                        splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"14\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            if strings.Contains(bg2Data, "<td class=\"BG0 S\" colspan=\"16\">") {
-                                split_span16 := strings.Split(bg2Data, "<td class=\"BG0 S\" colspan=\"16\">")
-                                for _,
-                                row_16 := range split_span16 {
-                                    trSplitdata := strings.Split(row_16, "<tr>")
+                                } else {
+                                    trSplitdata := strings.Split(thirdData, "<tr>")
                                     for _,
                                     row := range trSplitdata {
-                                        utils.WriteValue(row)
-                                        _index := "0"
-                                        if strings.Contains(row, "class=\"BG0") {
-                                            _index = "3"
-                                        } else if strings.Contains(row, "class=\"BG1") {
-                                            _index = "4"
-                                        } else if strings.Contains(row, "class=\"BG2") {
-                                            _index = "2"
-                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                            _index = "3"
-                                        }
-                                        val := utils.ParseData(row, _index)
-                                        if utils.FieldControl(val) {
-                                            _ListHtml = append(_ListHtml, * val)
-                                        }
-                                    }
-                                }
-                            } else {
-                                trSplitdata := strings.Split(bg2Data, "<tr>")
-                                for _,
-                                row := range trSplitdata {
-                                    utils.WriteValue(row)
-                                    _index := "0"
-                                    if strings.Contains(row, "class=\"BG0") {
-                                        _index = "3"
-                                    } else if strings.Contains(row, "class=\"BG1") {
-                                        _index = "1"
-                                    } else if strings.Contains(row, "class=\"BG2") {
-                                        _index = "2"
-                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                        _index = "3"
-                                    }
-                                    val := utils.ParseData(row, _index)
-                                    if utils.FieldControl(val) {
-                                        _ListHtml = append(_ListHtml, * val)
-                                    }
-                                }
-                            }
-                        }
-                    } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"13\">") {
-                        splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"13\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "1"
-                                } else if strings.Contains(row, "class=\"BG2") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"17\">") {
-                        splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"17\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "1"
-                                } else if strings.Contains(row, "class=\"BG2") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else if strings.Contains(firstRow, "<td class=\"BG0 S\" colspan=\"15\">") {
-                        splitbgos15 := strings.Split(firstRow, "<td class=\"BG0 S\" colspan=\"15\">")
-                        for _,
-                        bgorow := range splitbgos15 {
-                            utils.WriteValue(bgorow)
-                            if strings.Contains(bgorow, "<td class=\"BG1 S\" colspan=\"16\">") {
-                                splitBg016 := strings.Split(bgorow, "<td class=\"BG1 S\" colspan=\"16\">")
-                                for _,
-                                bg2Data := range splitBg016 {
-                                    utils.WriteValue(bg2Data)
-                                    trSplitdata := strings.Split(bg2Data, "<tr>")
-                                    for _, row := range trSplitdata {
-                                        utils.WriteValue(row)
-                                        _index := "0"
-                                        if strings.Contains(row, "class=\"BG0") {
-                                            _index = "3"
-                                        } else if strings.Contains(row, "class=\"BG1") {
-                                            _index = "4"
-                                        } else if strings.Contains(row, "class=\"BG2") {
-                                            _index = "5"
-                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                            _index = "3"
-                                        }
-                                        val := utils.ParseData(row, _index)
-                                        if utils.FieldControl(val) {
-                                            _ListHtml = append(_ListHtml, * val)
-                                        }
-                                    }
-                                }
-                            } else {
-                                trSplitdata := strings.Split(bgorow, "<tr>")
-                                for _,
-                                row := range trSplitdata {
-                                    utils.WriteValue(row)
-                                    _index := "0"
-                                    if strings.Contains(row, "class=\"BG0") {
-                                        _index = "3"
-                                    } else if strings.Contains(row, "class=\"BG1") {
-                                        _index = "4"
-                                    } else if strings.Contains(row, "class=\"BG2\">") {
-                                        _index = "5"
-                                    } else if strings.Contains(row, "class=\"BG2 S") {
-                                        _index = "2"
-                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                        _index = "3"
-                                    }
-                                    val := utils.ParseData(row, _index)
-                                    if utils.FieldControl(val) {
-                                        _ListHtml = append(_ListHtml, * val)
-                                    }
-                                }
-                            }
-                        }
-                    } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
-                        splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
-                        for _,
-                        bgorow := range splitbgos15 {
-                            trSplitdata := strings.Split(bgorow, "<tr>")
-                            for _,
-                            row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "4"
-                                } else if strings.Contains(row, "class=\"BG2\">") {
-                                    _index = "5"
-                                } else if strings.Contains(row, "class=\"BG2 S") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else {
-                        trSplitdata := strings.Split(firstRow, "<tr>")
-                        for _,
-                        row := range trSplitdata {
-                            utils.WriteValue(row)
-                            _index := "0"
-                            if strings.Contains(row, "class=\"BG0") {
-                                _index = "master"
-                            } else if strings.Contains(row, "class=\"BG1") {
-                                _index = "1"
-                            } else if strings.Contains(row, "class=\"BG2") {
-                                _index = "2"
-                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                _index = "3"
-                            }
-                            val := utils.ParseData(row, _index)
-                            if utils.FieldControl(val) {
-                                _ListHtml = append(_ListHtml, * val)
-                            }
-                        }
-                    }
-                }
-            } else if (strings.Contains(masterRow, "<td class=\"BG1 S\" colspan=\"13\">")) {
-                split_colspan_16 := strings.Split(masterRow, "<td class=\"BG1 S\" colspan=\"13\">")
-                for _,
-                colspan_firstdata := range split_colspan_16 {
-                    utils.WriteValue(colspan_firstdata)
-                    if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"14\">") {
-                        utils.WriteValue(colspan_firstdata)
-                        split_colspan_14 := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"14\">")
-                        for _,
-                        colspan_second := range split_colspan_14 {
-                            utils.WriteValue(colspan_second)
-                            if strings.Contains(colspan_second, "<td class=\"BG0 S\" colspan=\"16\">") {
-                                utils.WriteValue(colspan_second)
-                                splitData2 := strings.Split(colspan_second, "<td class=\"BG0 S\" colspan=\"16\">")
-                                utils.WriteValue("")
-                                for _,
-                                bg0Data := range splitData2 {
-                                    utils.WriteValue(bg0Data)
-                                    trSplitdata := strings.Split(bg0Data, "<tr>")
-                                    for _, row := range trSplitdata {
                                         utils.WriteValue(row)
                                         _index := "0"
                                         if strings.Contains(row, "class=\"BG0") {
@@ -1606,35 +1285,144 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                                         }
                                     }
                                 }
-                            } else {
-                                trSplitdata := strings.Split(colspan_second, "<tr>")
-                                for _,
-                                row := range trSplitdata {
-                                    utils.WriteValue(row)
-                                    _index := "0"
-                                    if strings.Contains(row, "class=\"BG0") {
-                                        _index = "3"
-                                    } else if strings.Contains(row, "class=\"BG1") {
-                                        _index = "1"
-                                    } else if strings.Contains(row, "class=\"BG2") {
-                                        _index = "2"
-                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                        _index = "3"
+                            }
+                        } else if (strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"15\">")) {
+                            splitDataThird := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"14\">")
+                            for _,
+                            thirdData := range splitDataThird {
+                                utils.WriteValue(thirdData)
+                                if strings.Contains(thirdData, "<td class=\"BG1 S\" colspan=\"16\">") {
+                                    splitBg016 := strings.Split(thirdData, "<td class=\"BG1 S\" colspan=\"16\">")
+                                    for _,
+                                    bg2Data := range splitBg016 {
+                                        utils.WriteValue(bg2Data)
+                                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                                        for _, row := range trSplitdata {
+                                            utils.WriteValue(row)
+                                            _index := "0"
+                                            if strings.Contains(row, "class=\"BG0") {
+                                                _index = "3"
+                                            } else if strings.Contains(row, "class=\"BG1") {
+                                                _index = "3"
+                                            } else if strings.Contains(row, "class=\"BG2") {
+                                                _index = "5"
+                                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                                _index = "3"
+                                            }
+                                            val := utils.ParseData(row, _index)
+                                            if utils.FieldControl(val) {
+                                                _ListHtml = append(_ListHtml, * val)
+                                            }
+                                        }
                                     }
-                                    val := utils.ParseData(row, _index)
-                                    if utils.FieldControl(val) {
-                                        _ListHtml = append(_ListHtml, * val)
+                                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
+                                    splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
+                                    for _,
+                                    bgorow := range splitbgos15 {
+                                        trSplitdata := strings.Split(bgorow, "<tr>")
+                                        for _,
+                                        row := range trSplitdata {
+                                            utils.WriteValue(row)
+                                            _index := "0"
+                                            if strings.Contains(row, "class=\"BG0") {
+                                                _index = "2"
+                                            } else if strings.Contains(row, "class=\"BG1") {
+                                                _index = "4"
+                                            } else if strings.Contains(row, "class=\"BG2\">") {
+                                                _index = "5"
+                                            } else if strings.Contains(row, "class=\"BG2 S") {
+                                                _index = "2"
+                                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                                _index = "3"
+                                            }
+                                            val := utils.ParseData(row, _index)
+                                            if utils.FieldControl(val) {
+                                                _ListHtml = append(_ListHtml, * val)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    trSplitdata := strings.Split(thirdData, "<tr>")
+                                    for _,
+                                    row := range trSplitdata {
+                                        utils.WriteValue(row)
+                                        _index := "0"
+                                        if strings.Contains(row, "class=\"BG0") {
+                                            _index = "3"
+                                        } else if strings.Contains(row, "class=\"BG1") {
+                                            _index = "4"
+                                        } else if strings.Contains(row, "class=\"BG2\">") {
+                                            _index = "5"
+                                        } else if strings.Contains(row, "class=\"BG2 S") {
+                                            _index = "2"
+                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                            _index = "3"
+                                        }
+                                        val := utils.ParseData(row, _index)
+                                        if utils.FieldControl(val) {
+                                            _ListHtml = append(_ListHtml, * val)
+                                        }
                                     }
                                 }
                             }
-                        }
-                    } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"16\">") {
-                        splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"16\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
+                        } else
+                        if strings.Contains(secondRow, "<td class=\"BG0 S\" colspan=\"15\">") {
+                            splitbgos15 := strings.Split(secondRow, "<td class=\"BG0 S\" colspan=\"15\">")
+                            for _,
+                            bgorow := range splitbgos15 {
+                                utils.WriteValue(bgorow)
+                                if strings.Contains(bgorow, "<td class=\"BG1 S\" colspan=\"16\">") {
+                                    splitBg016 := strings.Split(bgorow, "<td class=\"BG1 S\" colspan=\"16\">")
+                                    for _,
+                                    bg2Data := range splitBg016 {
+                                        utils.WriteValue(bg2Data)
+                                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                                        for _, row := range trSplitdata {
+                                            utils.WriteValue(row)
+                                            _index := "0"
+                                            if strings.Contains(row, "class=\"BG0") {
+                                                _index = "3"
+                                            } else if strings.Contains(row, "class=\"BG1") {
+                                                _index = "4"
+                                            } else if strings.Contains(row, "class=\"BG2") {
+                                                _index = "5"
+                                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                                _index = "3"
+                                            }
+                                            val := utils.ParseData(row, _index)
+                                            if utils.FieldControl(val) {
+                                                _ListHtml = append(_ListHtml, * val)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    trSplitdata := strings.Split(bgorow, "<tr>")
+                                    for _,
+                                    row := range trSplitdata {
+                                        utils.WriteValue(row)
+                                        _index := "0"
+                                        if strings.Contains(row, "class=\"BG0") {
+                                            _index = "3"
+                                        } else if strings.Contains(row, "class=\"BG1") {
+                                            _index = "4"
+                                        } else if strings.Contains(row, "class=\"BG2\">") {
+                                            _index = "5"
+                                        } else if strings.Contains(row, "class=\"BG2 S") {
+                                            _index = "2"
+                                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                            _index = "3"
+                                        }
+                                        val := utils.ParseData(row, _index)
+                                        if utils.FieldControl(val) {
+                                            _ListHtml = append(_ListHtml, * val)
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            trSplitdata := strings.Split(secondRow, "<tr>")
+                            for _,
+                            row := range trSplitdata {
                                 utils.WriteValue(row)
                                 _index := "0"
                                 if strings.Contains(row, "class=\"BG0") {
@@ -1652,86 +1440,18 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                                 }
                             }
                         }
-                    } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"13\">") {
-                        splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"13\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "3"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "1"
-                                } else if strings.Contains(row, "class=\"BG2") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"17\">") {
-                        splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"17\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "3"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "1"
-                                } else if strings.Contains(row, "class=\"BG2") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">") {
-                        splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">")
-                        for _,
-                        bg2Data := range splitData {
-                            utils.WriteValue(bg2Data)
-                            trSplitdata := strings.Split(bg2Data, "<tr>")
-                            for _, row := range trSplitdata {
-                                utils.WriteValue(row)
-                                _index := "0"
-                                if strings.Contains(row, "class=\"BG0") {
-                                    _index = "3"
-                                } else if strings.Contains(row, "class=\"BG1") {
-                                    _index = "1"
-                                } else if strings.Contains(row, "class=\"BG2") {
-                                    _index = "2"
-                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                                    _index = "3"
-                                }
-                                val := utils.ParseData(row, _index)
-                                if utils.FieldControl(val) {
-                                    _ListHtml = append(_ListHtml, * val)
-                                }
-                            }
-                        }
-                    } else {
-                        trSplitdata := strings.Split(colspan_firstdata, "<tr>")
-                        for _,
-                        row := range trSplitdata {
+                    }
+                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"16\">") {
+                    splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"16\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
                             utils.WriteValue(row)
                             _index := "0"
                             if strings.Contains(row, "class=\"BG0") {
-                                _index = "master"
+                                _index = "3"
                             } else if strings.Contains(row, "class=\"BG1") {
                                 _index = "1"
                             } else if strings.Contains(row, "class=\"BG2") {
@@ -1745,28 +1465,406 @@ func GetParsedHtml(data string, fileName string, uniqueID string, _packageCreata
                             }
                         }
                     }
+                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"14\">") {
+                    splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"14\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        if strings.Contains(bg2Data, "<td class=\"BG0 S\" colspan=\"16\">") {
+                            split_span16 := strings.Split(bg2Data, "<td class=\"BG0 S\" colspan=\"16\">")
+                            for _,
+                            row_16 := range split_span16 {
+                                trSplitdata := strings.Split(row_16, "<tr>")
+                                for _,
+                                row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "4"
+                                    } else if strings.Contains(row, "class=\"BG2") {
+                                        _index = "2"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
+                                    }
+                                }
+                            }
+                        } else {
+                            trSplitdata := strings.Split(bg2Data, "<tr>")
+                            for _,
+                            row := range trSplitdata {
+                                utils.WriteValue(row)
+                                _index := "0"
+                                if strings.Contains(row, "class=\"BG0") {
+                                    _index = "3"
+                                } else if strings.Contains(row, "class=\"BG1") {
+                                    _index = "1"
+                                } else if strings.Contains(row, "class=\"BG2") {
+                                    _index = "2"
+                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                    _index = "3"
+                                }
+                                val := utils.ParseData(row, _index)
+                                if utils.FieldControl(val) {
+                                    _ListHtml = append(_ListHtml, * val)
+                                }
+                            }
+                        }
+                    }
+                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"13\">") {
+                    splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"13\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "2"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "1"
+                            } else if strings.Contains(row, "class=\"BG2") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"17\">") {
+                    splitData := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"17\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "2"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "1"
+                            } else if strings.Contains(row, "class=\"BG2") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else if strings.Contains(firstRow, "<td class=\"BG0 S\" colspan=\"15\">") {
+                    splitbgos15 := strings.Split(firstRow, "<td class=\"BG0 S\" colspan=\"15\">")
+                    for _,
+                    bgorow := range splitbgos15 {
+                        utils.WriteValue(bgorow)
+                        if strings.Contains(bgorow, "<td class=\"BG1 S\" colspan=\"16\">") {
+                            splitBg016 := strings.Split(bgorow, "<td class=\"BG1 S\" colspan=\"16\">")
+                            for _,
+                            bg2Data := range splitBg016 {
+                                utils.WriteValue(bg2Data)
+                                trSplitdata := strings.Split(bg2Data, "<tr>")
+                                for _, row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "4"
+                                    } else if strings.Contains(row, "class=\"BG2") {
+                                        _index = "5"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
+                                    }
+                                }
+                            }
+                        } else {
+                            trSplitdata := strings.Split(bgorow, "<tr>")
+                            for _,
+                            row := range trSplitdata {
+                                utils.WriteValue(row)
+                                _index := "0"
+                                if strings.Contains(row, "class=\"BG0") {
+                                    _index = "3"
+                                } else if strings.Contains(row, "class=\"BG1") {
+                                    _index = "4"
+                                } else if strings.Contains(row, "class=\"BG2\">") {
+                                    _index = "5"
+                                } else if strings.Contains(row, "class=\"BG2 S") {
+                                    _index = "2"
+                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                    _index = "3"
+                                }
+                                val := utils.ParseData(row, _index)
+                                if utils.FieldControl(val) {
+                                    _ListHtml = append(_ListHtml, * val)
+                                }
+                            }
+                        }
+                    }
+                } else if strings.Contains(firstRow, "<td class=\"BG2 S\" colspan=\"9\">") {
+                    splitbgos15 := strings.Split(firstRow, "<td class=\"BG2 S\" colspan=\"9\">")
+                    for _,
+                    bgorow := range splitbgos15 {
+                        trSplitdata := strings.Split(bgorow, "<tr>")
+                        for _,
+                        row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "2"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "4"
+                            } else if strings.Contains(row, "class=\"BG2\">") {
+                                _index = "5"
+                            } else if strings.Contains(row, "class=\"BG2 S") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else {
+                    trSplitdata := strings.Split(firstRow, "<tr>")
+                    for _,
+                    row := range trSplitdata {
+                        utils.WriteValue(row)
+                        _index := "0"
+                        if strings.Contains(row, "class=\"BG0") {
+                            _index = "master"
+                        } else if strings.Contains(row, "class=\"BG1") {
+                            _index = "1"
+                        } else if strings.Contains(row, "class=\"BG2") {
+                            _index = "2"
+                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                            _index = "3"
+                        }
+                        val := utils.ParseData(row, _index)
+                        if utils.FieldControl(val) {
+                            _ListHtml = append(_ListHtml, * val)
+                        }
+                    }
+                }
+            }
+        } else if (strings.Contains(masterRow, "<td class=\"BG1 S\" colspan=\"13\">")) {
+            split_colspan_16 := strings.Split(masterRow, "<td class=\"BG1 S\" colspan=\"13\">")
+            for _,
+            colspan_firstdata := range split_colspan_16 {
+                utils.WriteValue(colspan_firstdata)
+                if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"14\">") {
+                    utils.WriteValue(colspan_firstdata)
+                    split_colspan_14 := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"14\">")
+                    for _,
+                    colspan_second := range split_colspan_14 {
+                        utils.WriteValue(colspan_second)
+                        if strings.Contains(colspan_second, "<td class=\"BG0 S\" colspan=\"16\">") {
+                            utils.WriteValue(colspan_second)
+                            splitData2 := strings.Split(colspan_second, "<td class=\"BG0 S\" colspan=\"16\">")
+                            utils.WriteValue("")
+                            for _,
+                            bg0Data := range splitData2 {
+                                utils.WriteValue(bg0Data)
+                                trSplitdata := strings.Split(bg0Data, "<tr>")
+                                for _, row := range trSplitdata {
+                                    utils.WriteValue(row)
+                                    _index := "0"
+                                    if strings.Contains(row, "class=\"BG0") {
+                                        _index = "3"
+                                    } else if strings.Contains(row, "class=\"BG1") {
+                                        _index = "4"
+                                    } else if strings.Contains(row, "class=\"BG2\">") {
+                                        _index = "5"
+                                    } else if strings.Contains(row, "class=\"BG2 S") {
+                                        _index = "2"
+                                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                        _index = "3"
+                                    }
+                                    val := utils.ParseData(row, _index)
+                                    if utils.FieldControl(val) {
+                                        _ListHtml = append(_ListHtml, * val)
+                                    }
+                                }
+                            }
+                        } else {
+                            trSplitdata := strings.Split(colspan_second, "<tr>")
+                            for _,
+                            row := range trSplitdata {
+                                utils.WriteValue(row)
+                                _index := "0"
+                                if strings.Contains(row, "class=\"BG0") {
+                                    _index = "3"
+                                } else if strings.Contains(row, "class=\"BG1") {
+                                    _index = "1"
+                                } else if strings.Contains(row, "class=\"BG2") {
+                                    _index = "2"
+                                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                    _index = "3"
+                                }
+                                val := utils.ParseData(row, _index)
+                                if utils.FieldControl(val) {
+                                    _ListHtml = append(_ListHtml, * val)
+                                }
+                            }
+                        }
+                    }
+                } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"16\">") {
+                    splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"16\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "3"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "1"
+                            } else if strings.Contains(row, "class=\"BG2") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"13\">") {
+                    splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"13\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "3"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "1"
+                            } else if strings.Contains(row, "class=\"BG2") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"17\">") {
+                    splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"17\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "3"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "1"
+                            } else if strings.Contains(row, "class=\"BG2") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else if strings.Contains(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">") {
+                    splitData := strings.Split(colspan_firstdata, "<td class=\"BG2 S\" colspan=\"15\">")
+                    for _,
+                    bg2Data := range splitData {
+                        utils.WriteValue(bg2Data)
+                        trSplitdata := strings.Split(bg2Data, "<tr>")
+                        for _, row := range trSplitdata {
+                            utils.WriteValue(row)
+                            _index := "0"
+                            if strings.Contains(row, "class=\"BG0") {
+                                _index = "3"
+                            } else if strings.Contains(row, "class=\"BG1") {
+                                _index = "1"
+                            } else if strings.Contains(row, "class=\"BG2") {
+                                _index = "2"
+                            } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                                _index = "3"
+                            }
+                            val := utils.ParseData(row, _index)
+                            if utils.FieldControl(val) {
+                                _ListHtml = append(_ListHtml, * val)
+                            }
+                        }
+                    }
+                } else {
+                    trSplitdata := strings.Split(colspan_firstdata, "<tr>")
+                    for _,
+                    row := range trSplitdata {
+                        utils.WriteValue(row)
+                        _index := "0"
+                        if strings.Contains(row, "class=\"BG0") {
+                            _index = "master"
+                        } else if strings.Contains(row, "class=\"BG1") {
+                            _index = "1"
+                        } else if strings.Contains(row, "class=\"BG2") {
+                            _index = "2"
+                        } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                            _index = "3"
+                        }
+                        val := utils.ParseData(row, _index)
+                        if utils.FieldControl(val) {
+                            _ListHtml = append(_ListHtml, * val)
+                        }
+                    }
+                }
 
+            }
+        } else {
+            trSplitdata := strings.Split(masterRow, "<tr>")
+            for _,
+            row := range trSplitdata {
+                utils.WriteValue(row)
+                _index := "0"
+                if strings.Contains(row, "class=\"BG0") {
+                    _index = "master"
+                } else if strings.Contains(row, "class=\"BG1") {
+                    _index = "1"
+                } else if strings.Contains(row, "class=\"BG2") {
+                    _index = "2"
+                } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
+                    _index = "3"
                 }
-            } else {
-                trSplitdata := strings.Split(masterRow, "<tr>")
-                for _,
-                row := range trSplitdata {
-                    utils.WriteValue(row)
-                    _index := "0"
-                    if strings.Contains(row, "class=\"BG0") {
-                        _index = "master"
-                    } else if strings.Contains(row, "class=\"BG1") {
-                        _index = "1"
-                    } else if strings.Contains(row, "class=\"BG2") {
-                        _index = "2"
-                    } else if strings.Contains(row, "<td class=\"BG0 R FP1\">") {
-                        _index = "3"
-                    }
-                    val := utils.ParseData(row, _index)
-                    if utils.FieldControl(val) {
-                        _ListHtml = append(_ListHtml, * val)
-                    }
+                val := utils.ParseData(row, _index)
+                if utils.FieldControl(val) {
+                    _ListHtml = append(_ListHtml, * val)
                 }
+            }
         }
     }
     return _ListHtml
@@ -1790,6 +1888,7 @@ func ConverToMasterDto(dto models.ConvertMasterDto) * models.MasterProduct {
 
 func ConverToDetailDto(dto models.ConvertDetailDto) * models.DetailProduct {
     r := models.DetailProduct {}
+    
     r = col3(dto.E, dto.H, "")
     r.Processid = dto.UniqueID
     r.MasterKod = dto.MasterCode
@@ -1803,17 +1902,17 @@ func col3(d models.ExcelDto, h models.ExcelDto, _type string) models.DetailProdu
     r.Tipi = d.Col1
 
     //col3 
-    ////--------Col3-----------------		
+    ////--------Col1-----------------		
     if h.Col1 == "Açıklama" {
         r.Aciklama = d.Col1
     }
 
-    ////--------Col3-----------------		
+    ////--------Col2-----------------		
     if h.Col2 == "Esk.Formülü" {
         r.EskFormülü = d.Col2
     } else if h.Col2 == "Açıklama" {
         r.Aciklama = d.Col2
-    }
+    }else
 
     ////--------Col3-----------------		
     if h.Col3 == "Malzeme" {
@@ -1922,6 +2021,8 @@ func col3(d models.ExcelDto, h models.ExcelDto, _type string) models.DetailProdu
         r.MOT = d.Col13
     } else if h.Col13 == "Pros." {
         r.Pros = d.Col13
+    } else if h.Col13 == "Fiyat" {
+        r.Fiyat = d.Col13
     }
 
     ////--------Col14-----------------		
@@ -2132,12 +2233,12 @@ func col3(d models.ExcelDto, h models.ExcelDto, _type string) models.DetailProdu
 
 func GetHeaderData(data string)(string, string) {
     hedarData := utils.GetDataFromHtml(data, "html body table tr td table")
-    hedarData = strings.ReplaceAll(hedarData, "</td>", "</td>\n")
-    // hedarData = strings.ReplaceAll(hedarData,"<tbody>","")
-    // hedarData = strings.ReplaceAll(hedarData,"<td=\"\"","")
-    // hedarData = strings.ReplaceAll(hedarData,"<tr>","")
-    // hedarData = strings.ReplaceAll(hedarData,"</tr>","")
-    // hedarData = strings.ReplaceAll(hedarData,"</tbody>","")
+         hedarData = strings.ReplaceAll(hedarData, "</td>", "</td>\n")
+        // hedarData = strings.ReplaceAll(hedarData,"<tbody>","")
+        // hedarData = strings.ReplaceAll(hedarData,"<td=\"\"","")
+        // hedarData = strings.ReplaceAll(hedarData,"<tr>","")
+        // hedarData = strings.ReplaceAll(hedarData,"</tr>","")
+        // hedarData = strings.ReplaceAll(hedarData,"</tbody>","")
     re := regexp.MustCompile(`<td.*?>(.*)</td>`)
     res := re.FindAllStringSubmatch(hedarData, -1)
     return res[2][1],

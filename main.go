@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	handlers "github.com/orgs/mdyazilim/html-converter-new/Handlers"
@@ -16,7 +17,7 @@ import (
 func main() {
     // common.GetEnvironment()
     // WRITE_VALUES=false
-    os.Setenv("WRITE_VALUES", "true")
+    os.Setenv("WRITE_VALUES", "false")
         // WRITE_HEADERS=true
     os.Setenv("WRITE_HEADERS", "true")
         // PRODUCTION=false
@@ -30,14 +31,14 @@ func main() {
         // MOVE_PATH=true
     os.Setenv("MOVE_PATH", "true")
 
-    //  log.Println("job started")
-    //  ticker :=  time.NewTicker(time.Second * 90)
-    //  for t :=  range ticker.C {
-    //      log.Println("Job tetiklendi ", t)
-    //            fmt.Print("\033[H\033[2J")
-    //      readFiles()
-    //  }
+    log.Println("job started")
     readFiles()
+    ticker :=  time.NewTicker(time.Second * 80)
+    for t :=  range ticker.C {
+        log.Println("Job tetiklendi ", t)
+        readFiles()
+    }
+    
 }
 
 func readFiles() {

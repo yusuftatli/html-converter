@@ -82,7 +82,7 @@ func ParseData(value string, dept string) * models.ExcelDto {
         e.Col0 = ""
     } else {
          value = strings.ReplaceAll(value, "</td>", "</td>\n")
-            //    value = strings.ReplaceAll(value,"</tr>","")
+                value = strings.ReplaceAll(value,"</tr>","")
             //  value = strings.ReplaceAll(value,"class=\"BG0\"","")
             //  value = strings.ReplaceAll(value,"class=\"BG0\"","")
             //  vaslue = strings.ReplaceAll(value,"class=\"BG0 L MLZ\"","")
