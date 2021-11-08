@@ -40,7 +40,7 @@ func saveOracleMaster(masterData *models.MasterProduct) (uint64, string, error) 
         fmt.Println(err)
     }
     defer db.Close()
-    dbQuery := "INSERT INTO MASTERPRODUCT (PROCESSID,MALZEMECODE,TIPI,UY,ACIKLAMA,TEDARIKCI,PARABIRIMI,FIYAT,PACKAGEDATE,PACKAGEID,FILENAME) VALUES('" + masterData.Processid + "','" + masterData.MasterKod + "','" + masterData.Tipi + "','" + masterData.Uy + "','" + masterData.Aciklama + "','" + masterData.Tedarikci + "','" + masterData.Parabirimi + "','" + masterData.Fiyat + "','" + masterData.PackageCretaDate + "','" + masterData.PackageNumber + "','" + masterData.FileName + "')"
+    dbQuery := "INSERT INTO MASTERPRODUCT (ID,PROCESSID,MALZEMECODE,TIPI,UY,ACIKLAMA,TEDARIKCI,PARABIRIMI,FIYAT,PACKAGEDATE,PACKAGEID,FILENAME) VALUES(MASTER_SEQ.NEXTVAL,'" + masterData.Processid + "','" + masterData.MasterKod + "','" + masterData.Tipi + "','" + masterData.Uy + "','" + masterData.Aciklama + "','" + masterData.Tedarikci + "','" + masterData.Parabirimi + "','" + masterData.Fiyat + "','" + masterData.PackageCretaDate + "','" + masterData.PackageNumber + "','" + masterData.FileName + "')"
     rows, err := db.Query(dbQuery)
     if err != nil {
         fmt.Println(".....Error processing query")
