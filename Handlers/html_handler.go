@@ -1894,6 +1894,8 @@ func ConverToDetailDto(dto models.ConvertDetailDto) * models.DetailProduct {
     r.MasterKod = dto.MasterCode
     r.MasteriId = dto.Masterid
     r.DetayId = dto.Dept
+    r.PaketNumarasi = dto.PackageNumber
+    r.PaketTarihi = dto.PackageCreataDate
     return &r
 }
 

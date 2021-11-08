@@ -21,7 +21,7 @@ func main() {
         // WRITE_HEADERS=true
     os.Setenv("WRITE_HEADERS", "true")
         // PRODUCTION=false
-    os.Setenv("PRODUCTION", "true")
+    os.Setenv("PRODUCTION", "false")
         // POSTGRE_DATABASE_URL=host=localhost user=postgres password=12345 dbname=htmlconvert port=5435 sslmode=disable
     os.Setenv("POSTGRE_DATABASE_URL", "host=localhost user=postgres password=12345 dbname=htmlconvert port=5435 sslmode=disable")
         // ORACLE_DATABASE_URL=
